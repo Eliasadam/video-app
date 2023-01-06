@@ -47,29 +47,62 @@ const DeleteButton = styled.button`
 `;
 
 const Youtube = () => {
-  const { search, video, setVideo, removeVideo, filteredResults } = useContext(vidContext);
+  const { search, video, setVideo, removeVideo, filteredResults, api_base} = useContext(vidContext);
+  console.log('this video length',video.length)
 
-  const likeVotes = (e, index, id) => {
+
+  const likeVotes = async(e, index, id) => {
     e.preventDefault();
     const newVideos = [...video];
     newVideos[index].rating++;
-    setVideo(newVideos);
+    
+    await fetch(api_base + id, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      rating: newVideos[index].rating,
+    }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  })
+    .then((response) => response.json())
+    .then(() => {
+      setVideo(newVideos);
+  } );
   }
  
-  const disLikeVotes = (e, index, id) => {
+  const disLikeVotes = async(e, index, id) => {
     e.preventDefault();
     const newVideos = [...video];
     newVideos[index].rating--;
-    setVideo(newVideos);
+    await fetch(api_base + id, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      rating: newVideos[index].rating,
+    }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  })
+    .then((response) => response.json())
+    .then((updateRating) => {
+      
+      if(newVideos._id === updateRating.id){
+        setVideo(newVideos);
+      }
+      
+  } );
   }
+
+  console.log('youtube length', video)
 
   return  search.length > 1? (
     <VideoContent>
-      {filteredResults.map((vid, index)=>{
+      {filteredResults?.map((vid, index)=>{
         return (
           <VidWrapper key = {index}>
             <Title>{vid.title}</Title>
-            <Rating> <ThumbUpIcon color="error"onClick={e=>{likeVotes(e,index,vid.id)}}/> <h4>{vid.rating} votes</h4><ThumbDownIcon color="error" onClick={e=>{disLikeVotes(e,index,vid.id)}} /></Rating>  
+            <Rating> <ThumbUpIcon color="error"onClick={e=>{likeVotes(e,index,vid._id)}}/> <h4>{vid.rating} votes</h4><ThumbDownIcon color="error" onClick={e=>{disLikeVotes(e,index,vid._id)}} /></Rating>  
             <ReactPlayer
               url={vid.url}
               config={{
@@ -80,18 +113,18 @@ const Youtube = () => {
               }}
               width='22rem'
             />
-            <DeleteButton onClick={() => removeVideo(vid.id)}>Delete</DeleteButton>   
+            <DeleteButton onClick={() => removeVideo(vid._id)}>Delete</DeleteButton>   
           </VidWrapper>
         )
       })}
     </VideoContent>
-  ) : video.length> 0? (
+  ) : video.length > 0? (
     <VideoContent>
-      {video.map((vid, index)=>{
+      {video?.map((vid, index)=>{
         return (
           <VidWrapper key = {index}>
             <Title>{vid.title}</Title>
-            <Rating> <ThumbUpIcon color="error"onClick={e=>{likeVotes(e,index,vid.id)}}/> <h4>{vid.rating} votes</h4><ThumbDownIcon color="error" onClick={e=>{disLikeVotes(e,index,vid.id)}} /></Rating>  
+            <Rating> <ThumbUpIcon color="error"onClick={e=>{likeVotes(e,index,vid._id)}}/> <h4>{vid.rating} votes</h4><ThumbDownIcon color="error" onClick={e=>{disLikeVotes(e,index,vid._id)}} /></Rating>  
             <ReactPlayer
               url={vid.url}
               config={{
@@ -102,7 +135,7 @@ const Youtube = () => {
               }}
               width='22rem'
             />
-            <DeleteButton onClick={() => removeVideo(vid.id)}>Delete</DeleteButton>   
+            <DeleteButton onClick={() => removeVideo(vid._id)}>Delete</DeleteButton>   
           </VidWrapper>
         )
       })}

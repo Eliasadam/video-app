@@ -1,6 +1,6 @@
-import React, {createContext, useState} from 'react';
-import useLocalState from './useLocalState'
-import { v4 as uuidv4 } from 'uuid';
+import React, {createContext, useState, useEffect} from 'react';
+
+const api_base = 'http://localhost:3002/youtubevideo/';
 
 export const vidContext = createContext();
 
@@ -8,50 +8,79 @@ const YoutubeVidContextProvider = (props) =>{
 
     const [search, setSearch] = useState('')
     const [filteredResults, setFilteredResults] = useState([]);
-    const [video, setVideo ] = useLocalState('videos', [
-        {
-          "id": 523523,
-          "title": "Never Gonna Give You Up",
-          "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-          "rating": 0
-        }]);
+    const [video, setVideo ] = useState([]);
+    const [ title, setTitle ] = useState("");
+    const [ vid, setVid ] = useState("");
+    const [show,setShow] = useState(false);
+    const [ newRate, setNewRate] = useState(0);
 
-    const filtered = search !== "" 
-    ? video
-    : video?.filter((vid) =>
-        vid.title.toLowerCase().includes(search.toLowerCase())
-      );
-
+    useEffect(() => {
+        fetch(api_base).then(response => response.json()).then(response => {
+           setVideo(response);
+            
+    });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []); 
+    console.log('This is response', video)
     const inputHanleChange = (searchValue) => {
-    
-    setSearch(searchValue);
-    if(search !== ''){  
-      const filtered = video.filter((vid) => vid.title.toLowerCase().includes(search.toLowerCase())) 
-        setFilteredResults(filtered);
-    }else{
-        setFilteredResults(video);
-     }
+        setSearch(searchValue);
+        if(search !== ''){  
+            const filtered = video.filter((vid) => vid.title.toLowerCase().includes(search.toLowerCase())) 
+            setFilteredResults(filtered);
+        }else{
+            setFilteredResults(video);
+        }
     }
 
-    const addVideo = (title, url, rating=0) =>{
-        setVideo([...video, {title, url, rating, id: uuidv4()}])       
-    }
+    const addVideo = async () => {
+		const data = await fetch(api_base, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json" 
+			},
+			body: JSON.stringify({
+				title: title,
+                rating: newRate,
+                url: vid
+			})
+		}).then(res => res.json());
 
-    const removeVideo = (id) => {
-       video && setVideo(video?.filter(vid => vid.id !==id));
+		setVideo([...video, data]);
+	}
+
+    const removeVideo = async (id) => {
+        const url = api_base + id
+        await fetch(url, {method: 'DELETE'}).then(
+        
+      () => {
+        setVideo(video.filter((val) => {
+            
+            return val._id !== id;
+          })
+        );
+      }
+    );
     }
 
     return(
         <vidContext.Provider value={{
-            search,
-            filtered, 
+            search, 
             setSearch, 
             inputHanleChange, 
             video,
             setVideo, 
             addVideo, 
             removeVideo,
-            filteredResults
+            filteredResults,
+            title,
+            setTitle,
+            vid,
+            setVid, 
+            show, 
+            setShow, 
+            api_base,
+            newRate,
+            setNewRate
             }}>
             {props.children}
         </vidContext.Provider>
