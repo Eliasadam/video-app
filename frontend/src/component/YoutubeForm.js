@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import Button from '@mui/material/Button';
 import { vidContext } from '../contexts/YoutubeVidContext';
 import Search from './Search';
@@ -52,17 +52,18 @@ const FormWrapper = styled.div`
 
 
 export default function YoutubeForm (){
-  const { addVideo } = useContext(vidContext);
-  const [ title, setTitle ] = useState("");
-  const [ vid, setVid ] = useState("");
-  const [show,setShow] = useState(false);
-
-    const handleSubmit = e => {
-      e.preventDefault();
-      if (!vid && !title) return;
-      addVideo(title, vid); 
-    };
+  const { addVideo, title, setTitle, vid, setVid, show, setShow} = useContext(vidContext);
   
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (!vid && !title) return;
+    addVideo(title, vid); 
+    setTitle('')
+    setVid('')
+  };
+
+
   return (
     <FormContainer>
     <ToggleButton >
