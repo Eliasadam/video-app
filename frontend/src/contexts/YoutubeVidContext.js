@@ -1,6 +1,6 @@
 import React, {createContext, useState, useEffect} from 'react';
 
-const api_base = 'http://localhost:3002/youtubevideo/';
+const api_base = 'https://ytb-app-server.onrender.com/youtubevideo/';
 
 export const vidContext = createContext();
 
