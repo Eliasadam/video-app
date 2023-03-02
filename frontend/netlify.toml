@@ -1,0 +1,11 @@
+[build]
+  command = "yarn build"
+  functions = "functions"
+  publish = "public"
+
+
+
+[[redirects]]
+  from = "/some-legacy-routes/*"
+  to = "/index.html"
+  status = 200
