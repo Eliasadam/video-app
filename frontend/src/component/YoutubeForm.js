@@ -80,8 +80,8 @@ export default function YoutubeForm (){
             <FormInput type ="text" value={vid} onChange ={(e)=>setVid(e.target.value)} placeholder='Add video link ..'required />  
           </FormInputWrapper>
       <FormButtons>
-        <Button variant ="outlined" color="warning" size='small' height='small' type='cancel' onClick = {()=>{setShow(false)}}>Cancel</Button>
-        <Button variant="contained" type="submit"  >Add vidoe</Button>
+        <Button variant ="outlined" color="warning" size='small' height='small' sx={{ mr: 2 }} type='cancel' onClick = {()=>{setShow(false)}}>Cancel</Button>
+        <Button variant="contained" type="submit" >Add vidoe</Button>
       </FormButtons>
   
     </Form> : null}
