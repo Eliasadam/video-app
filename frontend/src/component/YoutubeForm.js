@@ -46,9 +46,6 @@ const Form = styled.form`
 const FormWrapper = styled.div`
     margin: 1rem;
 `;
-// const CannelButton = styled.Button`
-// padding
-// `;
 
 
 export default function YoutubeForm (){
@@ -68,20 +65,20 @@ export default function YoutubeForm (){
     <FormContainer>
     <ToggleButton >
       <FormWrapper>
-        <Herf href='#0'  onClick={()=>{setShow(true)}} style={{fontStyle:'normal',textDecoration:'none',fontSize:'1.2rem'}}>Add video</Herf>
+        <Herf href='#0'  onClick={()=>{setShow(true)}} style={{fontStyle:'normal',textDecoration:'none',fontSize:'1.2rem'}} data-cy='add-video-button' >Add video</Herf>
         {show?
         <Form onSubmit={handleSubmit}>
           <FormInputWrapper>
             <Paragraph>Title</Paragraph>
-            <FormInput type ="text" value={title} onChange ={(e)=>setTitle(e.target.value)} placeholder='Add video title ...' required/>
+            <FormInput type ="text" value={title} onChange ={(e)=>setTitle(e.target.value)} placeholder='Add video title ...' required data-cy='video-title-input' />
           </FormInputWrapper>
           <FormInputWrapper>
             <Paragraph>URL</Paragraph>
-            <FormInput type ="text" value={vid} onChange ={(e)=>setVid(e.target.value)} placeholder='Add video link ..'required />  
+            <FormInput type ="text" value={vid} onChange ={(e)=>setVid(e.target.value)} placeholder='Add video link ..'required data-cy='video-url-input' />  
           </FormInputWrapper>
       <FormButtons>
         <Button variant ="outlined" color="warning" size='small' height='small' sx={{ mr: 2 }} type='cancel' onClick = {()=>{setShow(false)}}>Cancel</Button>
-        <Button variant="contained" type="submit" >Add vidoe</Button>
+        <Button variant="contained" type="submit" data-cy="add-btn">Add vidoe</Button>
       </FormButtons>
   
     </Form> : null}

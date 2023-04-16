@@ -18,7 +18,7 @@ const Title = styled.h1`
 function Header() {
   return (
     <AppHeader>
-          <Title data-testid="header">Video Recommendation</Title>
+          <Title data-cy="header">Video Recommendation</Title>
     </AppHeader>
   )
 }

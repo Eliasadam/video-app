@@ -101,8 +101,8 @@ const Youtube = () => {
       {filteredResults?.map((vid, index)=>{
         return (
           <VidWrapper key = {index}>
-            <Title>{vid.title}</Title>
-            <Rating> <ThumbUpIcon color="error"onClick={e=>{likeVotes(e,index,vid._id)}}/> <h4>{vid.rating} votes</h4><ThumbDownIcon color="error" onClick={e=>{disLikeVotes(e,index,vid._id)}} /></Rating>  
+            <Title data-cy={`video-${index}-title`}>{vid.title}</Title>
+            <Rating data-cy={`video-${index}-rating`}> <ThumbUpIcon color="error"onClick={e=>{likeVotes(e,index,vid._id)}}/> <h4>{vid.rating} votes</h4><ThumbDownIcon color="error" onClick={e=>{disLikeVotes(e,index,vid._id)}} /></Rating>  
             <ReactPlayer
               url={vid.url}
               config={{
@@ -113,18 +113,18 @@ const Youtube = () => {
               }}
               width='22rem'
             />
-            <DeleteButton onClick={() => removeVideo(vid._id)}>Delete</DeleteButton>   
+            <DeleteButton onClick={() => removeVideo(vid._id)} data-cy={`search-results-delete-${index}`}>Delete</DeleteButton>   
           </VidWrapper>
         )
       })}
     </VideoContent>
   ) : video.length > 0? (
-    <VideoContent>
+    <VideoContent data-cy='video-list'>
       {video?.map((vid, index)=>{
         return (
           <VidWrapper key = {index}>
-            <Title>{vid.title}</Title>
-            <Rating> <ThumbUpIcon color="error"onClick={e=>{likeVotes(e,index,vid._id)}}/> <h4>{vid.rating} votes</h4><ThumbDownIcon color="error" onClick={e=>{disLikeVotes(e,index,vid._id)}} /></Rating>  
+            <Title data-cy={`video-${index}-title`}>{vid.title}</Title>
+            <Rating data-cy={`video-${index}-rating`}> <ThumbUpIcon color="error"onClick={e=>{likeVotes(e,index,vid._id)}}/> <h4>{vid.rating} votes</h4><ThumbDownIcon color="error" onClick={e=>{disLikeVotes(e,index,vid._id)}} /></Rating>  
             <ReactPlayer
               url={vid.url}
               config={{
@@ -135,7 +135,7 @@ const Youtube = () => {
               }}
               width='22rem'
             />
-            <DeleteButton onClick={() => removeVideo(vid._id)}>Delete</DeleteButton>   
+            <DeleteButton onClick={() => removeVideo(vid._id)} data-cy={`video-${index}-delete-button`}>Delete</DeleteButton>   
           </VidWrapper>
         )
       })}

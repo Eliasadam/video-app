@@ -13,9 +13,9 @@
     "react-dom": "^18.2.0",
     "react-player": "^2.11.0",
     "react-scripts": "5.0.1",
+    "socket.io": "^4.6.1",
     "styled-components": "^5.3.6",
-    "web-vitals": "^2.1.4",
-    "socket.io": "^4.6.1"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -40,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cypress": "^12.9.0"
   }
 }
