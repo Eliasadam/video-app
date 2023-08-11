@@ -9,18 +9,30 @@ const YoutubeVidContextProvider = (props) =>{
     const [search, setSearch] = useState('')
     const [filteredResults, setFilteredResults] = useState([]);
     const [video, setVideo ] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
     const [ title, setTitle ] = useState("");
     const [ vid, setVid ] = useState("");
     const [show,setShow] = useState(false);
     const [ newRate, setNewRate] = useState(0);
 
     useEffect(() => {
-        fetch(api_base).then(response => response.json()).then(response => {
-           setVideo(response);
-            
-    });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []); 
+        const fetchData = async () => {
+          try {
+            const response = await fetch(api_base);
+            const json = await response.json();
+            setVideo(json);
+            setLoading(false);
+          } catch (error) {
+            setError(error);
+            setLoading(false);
+          }
+        };
+
+        fetchData();
+      }, []);
+  
+
     console.log('This is response', video)
     const inputHanleChange = (searchValue) => {
         setSearch(searchValue);
@@ -80,7 +92,11 @@ const YoutubeVidContextProvider = (props) =>{
             setShow, 
             api_base,
             newRate,
-            setNewRate
+            setNewRate,
+            loading,
+            error,
+            setError,
+            setLoading
             }}>
             {props.children}
         </vidContext.Provider>

@@ -47,7 +47,7 @@ const DeleteButton = styled.button`
 `;
 
 const Youtube = () => {
-  const { search, video, setVideo, removeVideo, filteredResults, api_base} = useContext(vidContext);
+  const { search, video, setVideo, removeVideo, filteredResults, api_base, loading, error} = useContext(vidContext);
   console.log('this video length',video.length)
 
 
@@ -95,6 +95,9 @@ const Youtube = () => {
   }
 
   console.log('youtube length', video)
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error.message}</p>;
 
   return  search.length > 1? (
     <VideoContent>
